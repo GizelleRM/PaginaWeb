@@ -1,0 +1,814 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "REST API CIIT",
+        "description": "<html><body>Documentacion para un punto de venta de una tienda de ropa <b>ciit</b></body></html>",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": "localhost:3000",
+    "basePath": "",
+    "tags": [
+        {
+            "name": "Prendas",
+            "description": "API para obtener información sobre prendas en el sistema"
+        },
+        {
+            "name": "Articulos",
+            "description": "API para obtener información sobre articulos en el sistema en venta"
+        },
+        {
+            "name": "Ventas",
+            "description": "API para obtener información sobre las ventas realizadas, cortes de caja por temporadas"
+        },
+        {
+            "name": "Lotes",
+            "description": "API para obtener información sobre los lotes de mercancía"
+        }
+    ],
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+        "/api/prendas/MostrarPrendas": {
+            "get": {
+                "tags": ["Prendas"],
+                "summary": "Listado de todos las prendas dadas de alta en el sistema.",
+                "description": "<p>Servicio que devuelve la información detallada de todos las prendas que existen en el ciit.</p><p>&nbsp;</p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "id_prenda": 46,
+                                    "precio_venta": 200,
+                                    "id_lote": 17,
+                                    "id_tipo": 1,
+                                    "id_talla": 1,
+                                    "genero": "MUJER",
+                                    "fecha_alta": "2023-12-27T21:02:50.000Z",
+                                    "status": "EN VENTA"
+                                },
+                                {
+                                    "id_prenda": 47,
+                                    "precio_venta": 200,
+                                    "id_lote": 17,
+                                    "id_tipo": 1,
+                                    "id_talla": 2,
+                                    "genero": "MUJER",
+                                    "fecha_alta": "2023-12-27T21:04:24.000Z",
+                                    "status": "EN VENTA"
+                                },
+                                {
+                                    "id_prenda": 48,
+                                    "precio_venta": 200,
+                                    "id_lote": 17,
+                                    "id_tipo": 5,
+                                    "id_talla": 3,
+                                    "genero": "HOMBRE",
+                                    "fecha_alta": "2023-12-27T21:04:24.000Z",
+                                    "status": "EN VENTA"
+                                },
+                                {
+                                    "id_prenda": 49,
+                                    "precio_venta": 200,
+                                    "id_lote": 17,
+                                    "id_tipo": 1,
+                                    "id_talla": 1,
+                                    "genero": "MUJER",
+                                    "fecha_alta": "2023-12-27T21:04:24.000Z",
+                                    "status": "EN VENTA"
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/Prendas"
+                        }
+                    },
+                    "404": {
+                        "description": "Prenda no encontrada"
+                    }
+                }
+            }
+        },
+        "/api/prendas/MostrarPrenda/{id}": {
+            "get": {
+                "tags": ["Prendas"],
+                "summary": "Informacion asociada a una prenda específica de acuerdo a su identificado (ID)",
+                "description": "<p>Servicio que devuelve la información detallada de la prenda solicitada</p><p>&nbsp;</p><p><em><strong>¿Cuál es del usuario de este id?</strong></em></p>",
+                "responses": {
+                    "200": {
+                        "description": "Respuesta",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "id_prenda": 51,
+                                    "id_lote": 17,
+                                    "precio_venta": 200,
+                                    "talla": "chica",
+                                    "fecha_alta": "2023-12-27T21:04:24.000Z",
+                                    "status": "EN VENTA"
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/Prendas"
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "identificador de la prenda",
+                        "type": "number",
+                        "default": "51"
+                    }
+                ]
+            }
+        },
+        "/api/prendas/CrearPrenda/": {
+            "post": {
+                "summary": "Creando una nueva prenda",
+                "operationId": "create",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "Prenda",
+                        "in": "body",
+                        "description": "Prenda agregada",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Prenda"
+                        }
+                    }
+                ],
+                "tags": ["Prendas"],
+                "responses": {
+                    "200": {
+                        "description": "Insertado con exito"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "/api/prendas/actualizarPrenda/": {
+            "put": {
+                "summary": "Actualizar la informaciòn de una prenda",
+                "description": "<p>Servicio que permite editar la informaciòn de una prenda dado el id</p><p>&nbsp;</p>",
+                "operationId": "update",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "Prenda",
+                        "in": "body",
+                        "description": "Info de la prenda",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/NuevaPrenda"
+                        }
+                    }
+                ],
+                "tags": ["Prendas"],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "/api/prendas/MostrarTallas": {
+            "get": {
+                "tags": ["Prendas"],
+                "summary": "Listado de todas las tallas de las prendas dadas de alta en el sistema.",
+                "description": "<p>Servicio que devuelve la información detallada de todas las tallas que existen en el ciit.</p><p>&nbsp;</p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "talla": "chica"
+                                },
+                                {
+                                    "talla": "mediana"
+                                },
+                                {
+                                    "talla": "grande"
+                                },
+                                {
+                                    "talla": "extragrande"
+                                },
+                                {
+                                    "talla": "unitalla"
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/Tallas"
+                        }
+                    },
+                    "404": {
+                        "description": "Tallas no encontradas"
+                    }
+                }
+            }
+        },
+        "/api/articulos/MostrarArticulo/{id}": {
+            "get": {
+                "tags": ["Articulos"],
+                "summary": "Informacion asociada a un articulo específico de acuerdo a su identificado (ID)",
+                "description": "<p>Servicio que devuelve la información detallada del articulo solicitado</p><p>&nbsp;</p><p><em><strong>¿Cuál es el id de este articulo?</strong></em></p>",
+                "responses": {
+                    "200": {
+                        "description": "Respuesta",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "id_articulo": 22,
+                                    "precio_venta": 300,
+                                    "id_tipo": 5,
+                                    "precio_compra": 100,
+                                    "fecha_alta": "2023-12-27T19:46:04.000Z",
+                                    "status": "EN VENTA"
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/Articulos"
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "identificador del",
+                        "type": "number",
+                        "default": "22"
+                    }
+                ]
+            }
+        },
+        "/api/articulos/EliminarArticulo/{id}": {
+            "delete": {
+                "tags": ["Articulos"],
+                "summary": "Eliminar una empresa de la base dado su identificador (id)",
+                "description": "<p>Servicio que elimina el articulo seleccionado dado su id</p><p>&nbsp;</p><p><em><strong>¿Fué una ejecución exitoso?</strong></em></p>",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "identificador de la empresa",
+                        "type": "number",
+                        "default": "22"
+                    }
+                ]
+            }
+        },
+        "/api/articulos/InsertarArticulo/": {
+            "post": {
+                "summary": "Creando un nuevo articulo",
+                "operationId": "create",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "Articulo",
+                        "in": "body",
+                        "description": "Articulo agregado",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Articulo"
+                        }
+                    }
+                ],
+                "tags": ["Articulos"],
+                "responses": {
+                    "200": {
+                        "description": "Insertado con exito"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "/api/articulos/ActualizarArticulo/{id}": {
+            "put": {
+                "summary": "Actualizar la informaciòn de un articulo dado su id",
+                "description": "<p>Servicio que permite editar la informaciòn de un articulo especifico</p><p>&nbsp;</p>",
+                "operationId": "update",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "identificador del articulo",
+                        "type": "number",
+                        "default": "0"
+                    },
+                    {
+                        "name": "Articulo",
+                        "in": "body",
+                        "description": "Informacion nueva del articulo",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Articulos"
+                        }
+                    }
+                ],
+                "tags": ["Articulos"],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "api/lotes/MostrarLotes/": {
+            "get": {
+                "tags": [
+                    "lotes"
+                ],
+                "summary": "Listado de todas los lotes.",
+                "description": "<p>Servicio que devuelve la información detallada de todos los lotes.</p><p>&nbsp;</p><p><em><strong>¿Cuantos lotes existen?</strong></em></p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "id_lote": 1,
+                                    "cantidad": 2,
+                                    "precio": 15000,
+                                    "fecha_alta": "2023-07-01",
+                                    "status": "VENTA",
+                                    "prendas_en_alta": 100
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/lotes"
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "api/Ventas/CortePorDia/{fecha}": {
+            "get": {
+                "tags": ["Ventas"],
+                "summary": "Muestra un corte por dia.",
+                "description": "<p>Servicio que devuelve un corte por dia.</p><p>&nbsp;</p><p><em><strong>¿Cuáles fueron las ganancias en un dia?</strong></em></p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "example": [
+                                    {
+                                        "fecha": "2023-07-01"
+                                    }
+                                ]
+                            }
+                        },
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ventas_generales_articulos"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "fecha",
+                        "in": "path",
+                        "required": true,
+                        "description": "Fecha del corte",
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2023-07-01"
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/Ventas/CortePorPeriodo/{fechaI}/{fechaF}": {
+            "get": {
+                "tags": ["Ventas"],
+                "summary": "Muestra un corte por periodo.",
+                "description": "<p>Servicio que devuelve un corte por periodo.</p><p>&nbsp;</p><p><em><strong>¿Cuáles fueron las ganancias en cierto periodo?</strong></em></p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "example": [
+                                    {
+                                        "fechaInicial": "2023-07-01",
+                                        "fechaFinal": "2023-08-01"
+                                    }
+                                ]
+                            }
+                        },
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ventas"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "fechaInicial",
+                        "in": "path",
+                        "required": true,
+                        "description": "Fecha inicial del periodo de ventas",
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2023-07-01"
+                        }
+                    },
+                    {
+                        "name": "fechaFinal",
+                        "in": "path",
+                        "required": true,
+                        "description": "Fecha final del periodo de ventas",
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2023-08-01"
+                        }
+                    }
+                ]
+            }
+        }, "api/Ventas/MostrarVentasPorDia/{fecha}": {
+            "get": {
+                "tags": ["Ventas"],
+                "summary": "Muestra un ventas por dia.",
+                "description": "<p>Servicio que devuelve ventas por dia.</p><p>&nbsp;</p><p><em><strong>¿Cuáles fueron las ganancias en un dia?</strong></em></p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "example": [
+                                    {
+                                        "fecha": "2023-07-01"
+                                    }
+                                ]
+                            }
+                        },
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ventas_generales_articulos"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "fecha",
+                        "in": "path",
+                        "required": true,
+                        "description": "Fecha del dia de venta",
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2023-07-01"
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/Ventas/MostrarVentasPeriodo/{fechaI}/{fechaF}": {
+            "get": {
+                "tags": ["Ventas"],
+                "summary": "Muestra venta por periodo.",
+                "description": "<p>Servicio que devuelve las ventas por periodo.</p><p>&nbsp;</p><p><em><strong>¿Cuáles fueron las ganancias en este periodo?</strong></em></p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "example": [
+                                    {
+                                        "fechaInicial": "2023-07-01",
+                                        "fechaFinal": "2023-08-01"
+                                    }
+                                ]
+                            }
+                        },
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ventas"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "fechaInicial",
+                        "in": "path",
+                        "required": true,
+                        "description": "Fecha inicial del periodo de ventas",
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2023-07-01"
+                        }
+                    },
+                    {
+                        "name": "fechaFinal",
+                        "in": "path",
+                        "required": true,
+                        "description": "Fecha final del periodo de ventas",
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2023-08-01"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "definitions": {
+        "Prenda": {
+            "type": "object",
+            "properties": {
+                "id_lote": {
+                    "type": "number",
+                    "description": "Codigo que permite identificar al lote al que corresponde"
+                },
+                "precio_venta": {
+                    "type": "number",
+                    "description": "Precio de venta"
+                },
+                "tipo": {
+                    "type": "string",
+                    "description": "tipo de prenda que es: falda, pantalon, etc."
+                },
+                "talla": {
+                    "type": "string",
+                    "description": "id de la talla de la prenda"
+                },
+                "genero": {
+                    "type": "string",
+                    "description": "genero de la prenda: MUJER u HOMBRE"
+                }
+            }
+        },
+        "Prendas": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/Prenda"
+            }
+        },
+        "NuevaPrenda": {
+            "type": "object",
+            "properties": {
+                "id_prenda": {
+                    "type": "number",
+                    "description": "Codigo que permite identificar el id de la prenda a actualizar"
+                },
+                "id_lote": {
+                    "type": "number",
+                    "description": "Codigo que permite identificar al lote al que corresponde"
+                },
+                "precio_venta": {
+                    "type": "number",
+                    "description": "Precio de venta"
+                },
+                "tipo": {
+                    "type": "string",
+                    "description": "tipo de prenda que es: flada, pantalon, etc."
+                },
+                "talla": {
+                    "type": "string",
+                    "description": " talla de la prenda"
+                },
+                "genero": {
+                    "type": "string",
+                    "description": "genero de la prenda"
+                }
+            }
+        },
+        "Articulo": {
+            "type": "object",
+            "properties": {
+                "id_articulo": {
+                    "type": "number",
+                    "description": "id del articulo correspondiente"
+                },
+                "precio_venta": {
+                    "type": "number",
+                    "description": "Precio de venta"
+                },
+                "id_tipo": {
+                    "type": "number",
+                    "description": "tipo de articulo que es"
+                },
+                "precio_compra": {
+                    "type": "number",
+                    "description": "Precio de compra"
+                },
+                "fecha_alta": {
+                    "type": "",
+                    "description": "fecha en la que fue dado dado de alta el articulo"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "status actual de la venta"
+                }
+            }
+        },
+        "Articulos": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/Articulo"
+            }
+        },
+        "Talla": {
+            "type": "object",
+            "properties": {
+                "tallas": {
+                    "type": "string",
+                    "description": "talla obtenida"
+                }
+            }
+        },
+        "Tallas": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/Talla"
+            }
+        },
+        "ventas": {
+            "type": "object",
+            "properties": {
+                "id_prenda": {
+                    "type": "number",
+                    "description": "id de la prenda correspondiente"
+                },
+                "id_venta": {
+                    "type": "number",
+                    "description": "id de la venta correspondiente"
+                }
+            }
+        },
+        "ventas_articulos": {
+            "type": "object",
+            "properties": {
+                "id_articulo": {
+                    "type": "number",
+                    "description": "id del articulo correspondiente"
+                },
+                "id_venta": {
+                    "type": "number",
+                    "description": "id de la venta correspondiente"
+                },
+                "fechaI": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2024-02-10",
+                    "description": "Permite saber la fecha de la venta"
+                }, "fechaF": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2024-02-12",
+                    "description": "Permite saber la fecha de la venta"
+                }
+            }
+        },
+        "ventas_generales": {
+            "type": "object",
+            "properties": {
+                "id_venta": {
+                    "type": "number",
+                    "description": "id de la venta correspondiente"
+                },
+                "total": {
+                    "type": "number",
+                    "description": "total de venta"
+                },
+                "cantidad_productos": {
+                    "type": "number",
+                    "description": "catidad de productos"
+                },
+                "fecha": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2024-02-10",
+                    "description": "Permite saber la fecha de la venta"
+                }
+            }
+        },
+        "ventas_generales_articulos": {
+            "type": "object",
+            "properties": {
+                "id_venta": {
+                    "type": "number",
+                    "description": "id de la venta correspondiente"
+                },
+                "total": {
+                    "type": "number",
+                    "description": "total de venta"
+                },
+                "fecha": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2024-02-10",
+                    "description": "Permite saber la fecha de la venta"
+                },
+                "cantidad_productos": {
+                    "type": "number",
+                    "description": "catidad de productos"
+                }
+            }
+        },
+        "lotes": {
+            "type": "object",
+            "properties": {
+                "id_lote": {
+                    "type": "number",
+                    "description": "id del lote correspondiente"
+                },
+                "cantidad": {
+                    "type": "number",
+                    "description": "cantidad de lotes"
+                },
+                "precio": {
+                    "type": "number",
+                    "description": "precio de lotes"
+                },
+                "fecha_alta": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2024-02-10",
+                    "description": "Permite saber la fecha de la alta"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Permite saber el estatus del lote"
+                }
+            }
+        }
+    }
+}
